@@ -32,7 +32,7 @@ export function FormNuevo({ vendedores, usuarioId }: { vendedores: { id: string;
         <label className="etiqueta">Nota inicial</label>
         <textarea name="nota" className="campo" rows={3} placeholder="Ej.: Pasó por el salón preguntando por la Hilux." />
       </div>
-      {estado.error && <p className="text-sm text-red-600">{estado.error}</p>}
+      {estado.error && <p className="text-sm text-red-400">{estado.error}</p>}
       <button className="boton" disabled={enviando}>{enviando ? "Guardando…" : "Guardar contacto"}</button>
     </form>
   );

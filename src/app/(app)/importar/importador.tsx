@@ -135,26 +135,26 @@ export function Importador({ vendedores }: { vendedores: { id: string; nombre: s
           Elegir archivo CSV
           <input type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => e.target.files?.[0] && leer(e.target.files[0])} />
         </label>
-        {archivo && <span className="text-sm text-slate-600">{archivo}</span>}
-        <button type="button" className="ml-auto text-sm text-blue-600 hover:underline" onClick={descargarPlantilla}>
+        {archivo && <span className="text-sm text-texto-2">{archivo}</span>}
+        <button type="button" className="ml-auto text-sm text-accion hover:underline" onClick={descargarPlantilla}>
           Descargar plantilla
         </button>
       </div>
 
-      {resultado?.error && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{resultado.error}</p>}
+      {resultado?.error && <p className="rounded-md bg-marca/10 p-3 text-sm text-red-400">{resultado.error}</p>}
       {resultado?.cantidad != null && (
-        <p className="rounded-md bg-green-50 p-3 text-sm text-green-800">
+        <p className="rounded-md bg-exito/10 p-3 text-sm text-green-400">
           Se importaron {resultado.cantidad} contactos. Quedaron con «Primer contacto» para hoy. <Link href="/hoy" className="underline">Ir a Hoy</Link>
         </p>
       )}
-      {procesando && <p className="text-sm text-slate-500">Procesando…</p>}
+      {procesando && <p className="text-sm text-apagado">Procesando…</p>}
 
       {filas.length > 0 && (
         <>
           <div className="flex flex-wrap items-center gap-4 text-sm">
             <span><strong>{cuenta("ok")}</strong> listas</span>
-            <span className="text-amber-700"><strong>{cuenta("duplicado")}</strong> duplicadas</span>
-            <span className="text-red-700"><strong>{cuenta("error")}</strong> con errores (no se importan)</span>
+            <span className="text-amber-400"><strong>{cuenta("duplicado")}</strong> duplicadas</span>
+            <span className="text-red-400"><strong>{cuenta("error")}</strong> con errores (no se importan)</span>
             {cuenta("duplicado") > 0 && (
               <label className="flex items-center gap-1.5">
                 <input type="checkbox" checked={incluirDuplicados} onChange={(e) => setIncluirDuplicados(e.target.checked)} />
@@ -168,7 +168,7 @@ export function Importador({ vendedores }: { vendedores: { id: string; nombre: s
 
           <div className="tarjeta overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs text-slate-500">
+              <thead className="bg-panel-2 text-left text-xs text-apagado">
                 <tr>
                   <th className="px-3 py-2">Fila</th>
                   <th className="px-3 py-2">Estado</th>
@@ -182,11 +182,11 @@ export function Importador({ vendedores }: { vendedores: { id: string; nombre: s
               </thead>
               <tbody>
                 {filas.map((f) => (
-                  <tr key={f.n} className={`border-t border-slate-100 ${f.estado === "error" ? "bg-red-50" : f.estado === "duplicado" ? "bg-amber-50" : ""}`}>
-                    <td className="px-3 py-2 text-slate-400">{f.n}</td>
+                  <tr key={f.n} className={`border-t border-borde ${f.estado === "error" ? "bg-marca/10" : f.estado === "duplicado" ? "bg-aviso/10" : ""}`}>
+                    <td className="px-3 py-2 text-apagado">{f.n}</td>
                     <td className="px-3 py-2">
-                      {f.estado === "ok" ? <span className="text-green-700">OK</span> : (
-                        <span className={f.estado === "error" ? "text-red-700" : "text-amber-700"}>{f.problemas.join(". ")}</span>
+                      {f.estado === "ok" ? <span className="text-green-400">OK</span> : (
+                        <span className={f.estado === "error" ? "text-red-400" : "text-amber-400"}>{f.problemas.join(". ")}</span>
                       )}
                     </td>
                     <td className="px-3 py-2">{f.fila.nombre}</td>

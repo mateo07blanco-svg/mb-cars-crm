@@ -31,7 +31,7 @@ export function FormularioLogin() {
   return (
     <form action={ingresar} className="space-y-4">
       {pendiente && (
-        <p className="rounded-md bg-amber-50 p-3 text-sm text-amber-800">
+        <p className="rounded-md bg-aviso/10 p-3 text-sm text-amber-400">
           Tu cuenta todavía no está habilitada. Pedile al dueño que la active desde «Equipo».
         </p>
       )}
@@ -43,10 +43,10 @@ export function FormularioLogin() {
         <label className="etiqueta" htmlFor="password">Contraseña</label>
         <input className="campo" id="password" name="password" type="password" autoComplete="current-password" required />
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button className="boton w-full" disabled={enviando}>{enviando ? "Ingresando…" : "Ingresar"}</button>
-      <p className="text-center text-xs text-slate-500">
-        ¿Sos vendedor nuevo? <Link href="/registro" className="text-blue-600 hover:underline">Creá tu cuenta</Link>
+      {error && <p className="text-sm text-red-400">{error}</p>}
+      <button className="boton-marca w-full py-2.5" disabled={enviando}>{enviando ? "Ingresando…" : "Ingresar"}</button>
+      <p className="text-center text-xs text-apagado">
+        ¿Sos vendedor nuevo? <Link href="/registro" className="text-accion hover:underline">Creá tu cuenta</Link>
       </p>
     </form>
   );

@@ -7,10 +7,11 @@ import {
 import { hoyISO, sumarDias } from "@/lib/formato";
 import { ETAPAS, TIPOS_INTERACCION, type Contacto, type Etapa } from "@/lib/tipos";
 import { DialogoPerdido } from "@/componentes/dialogo-perdido";
+import { COLOR_ETAPA } from "@/componentes/etiquetas";
 
 function Aviso({ r }: { r: Resultado }) {
-  if (r.error) return <p className="text-sm text-red-600">{r.error}</p>;
-  if (r.mensaje) return <p className="text-sm text-green-700">{r.mensaje}</p>;
+  if (r.error) return <p className="text-sm text-red-400">{r.error}</p>;
+  if (r.mensaje) return <p className="text-sm text-green-400">{r.mensaje}</p>;
   return null;
 }
 
@@ -25,7 +26,7 @@ function AtajosFecha({ onElegir }: { onElegir: (f: string) => void }) {
   return (
     <div className="flex flex-wrap gap-1">
       {atajos.map((a) => (
-        <button key={a.t} type="button" className="rounded border border-slate-200 px-2 py-0.5 text-xs text-slate-600 hover:bg-slate-100" onClick={() => onElegir(a.f)}>
+        <button key={a.t} type="button" className="rounded border border-borde px-2 py-0.5 text-xs text-texto-2 hover:bg-panel-3" onClick={() => onElegir(a.f)}>
           {a.t}
         </button>
       ))}
@@ -57,7 +58,7 @@ export function FormInteraccion({ id }: { id: string }) {
         ))}
       </div>
       <textarea name="nota" className="campo" rows={3} placeholder="¿Qué pasó? Ej.: Lo llamé, quiere ver la unidad el sábado." required />
-      <div className="rounded-md bg-slate-50 p-3">
+      <div className="rounded-md bg-panel-2 p-3">
         <p className="etiqueta">Próximo paso (opcional, lo actualiza en la ficha)</p>
         <div className="grid gap-2 sm:grid-cols-[1fr_160px]">
           <input name="proximo_paso" className="campo" placeholder="Ej.: Confirmar test drive" />
@@ -111,13 +112,13 @@ export function SelectorEtapa({ id, nombre, etapa }: { id: string; nombre: strin
             type="button"
             disabled={pendiente || e.valor === etapa}
             onClick={() => (e.valor === "perdido" ? setPidiendoMotivo(true) : cambiar(e.valor))}
-            className={`rounded-md border px-2.5 py-1 text-sm ${e.valor === etapa ? "border-slate-900 bg-slate-900 text-white" : "border-slate-300 hover:bg-slate-100"}`}
+            className={`rounded-lg px-3 py-1.5 text-sm font-medium ring-1 ring-inset transition ${e.valor === etapa ? COLOR_ETAPA[e.valor].etiqueta : "text-texto-2 ring-borde hover:bg-panel-3"}`}
           >
             {e.etiqueta}
           </button>
         ))}
       </div>
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
       {pidiendoMotivo && (
         <DialogoPerdido
           nombre={nombre}

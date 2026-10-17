@@ -27,7 +27,7 @@ export default async function Contactos({ searchParams }: PageProps<"/contactos"
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Contactos <span className="text-base font-normal text-slate-500">({filtrados.length})</span></h1>
+        <h1 className="titulo-pagina">Contactos <span className="text-base font-normal text-apagado">({filtrados.length})</span></h1>
         <Link href="/contactos/nuevo" className="boton">+ Nuevo contacto</Link>
       </div>
 
@@ -42,7 +42,7 @@ export default async function Contactos({ searchParams }: PageProps<"/contactos"
 
       <div className="tarjeta overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50 text-left text-xs text-slate-500">
+          <thead className="bg-panel-2 text-left text-xs text-apagado">
             <tr>
               <th className="px-3 py-2">Nombre</th>
               <th className="px-3 py-2">Etapa</th>
@@ -55,28 +55,28 @@ export default async function Contactos({ searchParams }: PageProps<"/contactos"
           </thead>
           <tbody>
             {filtrados.map((c) => (
-              <tr key={c.id} className={`border-t border-slate-100 ${c.enfriado ? "bg-red-50" : ""}`}>
+              <tr key={c.id} className={`border-t border-borde ${c.enfriado ? "bg-marca/10" : ""}`}>
                 <td className="px-3 py-2">
                   <Link href={`/contactos/${c.id}`} className="font-medium hover:underline">{c.nombre}</Link>
-                  <div className="text-xs text-slate-500">{c.telefono ?? c.email}</div>
+                  <div className="text-xs text-apagado">{c.telefono ?? c.email}</div>
                 </td>
                 <td className="px-3 py-2"><EtiquetaEtapa etapa={c.etapa} /></td>
-                <td className="px-3 py-2 text-slate-600">{c.interes}</td>
-                <td className="px-3 py-2 whitespace-nowrap text-slate-600">{dinero(c.monto, c.moneda)}</td>
-                <td className={`px-3 py-2 ${c.enfriado || c.vencido ? "text-red-700" : "text-slate-600"}`}>
+                <td className="px-3 py-2 text-texto-2">{c.interes}</td>
+                <td className="px-3 py-2 whitespace-nowrap text-texto-2">{dinero(c.monto, c.moneda)}</td>
+                <td className={`px-3 py-2 ${c.enfriado || c.vencido ? "text-red-400" : "text-texto-2"}`}>
                   {c.etapa === "perdido" && c.motivo_perdida
                     ? ETIQUETA_MOTIVO[c.motivo_perdida]
                     : c.enfriado
                       ? `Enfriado (${c.dias_sin_actividad} días)`
                       : c.proximo_paso ? `${fechaCorta(c.proximo_paso_fecha)}: ${c.proximo_paso}` : ""}
                 </td>
-                <td className="px-3 py-2 text-slate-500">{ETIQUETA_ORIGEN[c.origen]}</td>
-                {usuario.rol === "dueno" && <td className="px-3 py-2 text-slate-500">{c.vendedor_nombre}</td>}
+                <td className="px-3 py-2 text-apagado">{ETIQUETA_ORIGEN[c.origen]}</td>
+                {usuario.rol === "dueno" && <td className="px-3 py-2 text-apagado">{c.vendedor_nombre}</td>}
               </tr>
             ))}
           </tbody>
         </table>
-        {!filtrados.length && <p className="p-6 text-center text-sm text-slate-500">No hay contactos que coincidan.</p>}
+        {!filtrados.length && <p className="p-6 text-center text-sm text-apagado">No hay contactos que coincidan.</p>}
       </div>
     </div>
   );

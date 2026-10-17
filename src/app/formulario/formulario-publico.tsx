@@ -7,7 +7,7 @@ export function FormularioPublico() {
   const [estado, accion, enviando] = useActionState(enviarFormulario, {});
 
   if (estado.ok) {
-    return <p className="rounded-md bg-green-50 p-4 text-green-800">¡Gracias! Recibimos tu consulta y te vamos a contactar pronto.</p>;
+    return <p className="rounded-md bg-exito/10 p-4 text-green-400">¡Gracias! Recibimos tu consulta y te vamos a contactar pronto.</p>;
   }
 
   return (
@@ -34,8 +34,8 @@ export function FormularioPublico() {
       </div>
       {/* Campo trampa para robots: oculto para las personas. */}
       <input name="empresa" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
-      {estado.error && <p className="text-sm text-red-600">{estado.error}</p>}
-      <button className="boton w-full" disabled={enviando}>{enviando ? "Enviando…" : "Enviar consulta"}</button>
+      {estado.error && <p className="text-sm text-red-400">{estado.error}</p>}
+      <button className="boton-marca w-full py-2.5" disabled={enviando}>{enviando ? "Enviando…" : "Enviar consulta"}</button>
     </form>
   );
 }

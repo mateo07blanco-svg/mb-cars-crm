@@ -29,8 +29,8 @@ export function CambiarContrasena() {
         <label className="etiqueta" htmlFor="repetir">Repetila</label>
         <input className="campo" id="repetir" name="repetir" type="password" minLength={8} autoComplete="new-password" required />
       </div>
-      {estado.error && <p className="text-sm text-red-600">{estado.error}</p>}
-      {estado.ok && <p className="text-sm text-green-700">Listo, la próxima vez entrá con la nueva.</p>}
+      {estado.error && <p className="text-sm text-red-400">{estado.error}</p>}
+      {estado.ok && <p className="text-sm text-green-400">Listo, la próxima vez entrá con la nueva.</p>}
       <button className="boton" disabled={enviando}>{enviando ? "Guardando…" : "Cambiar contraseña"}</button>
     </form>
   );

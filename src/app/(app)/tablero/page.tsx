@@ -25,8 +25,8 @@ export default async function PaginaTablero({ searchParams }: PageProps<"/tabler
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Tablero</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="titulo-pagina">Tablero</h1>
+          <p className="text-sm text-apagado">
             Arrastrá las tarjetas para cambiar de etapa. Ganados y perdidos de los últimos {DIAS_CERRADOS_VISIBLES} días.
           </p>
         </div>

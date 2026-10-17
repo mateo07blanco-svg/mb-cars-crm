@@ -10,6 +10,7 @@ import { cambiarEtapa } from "@/lib/acciones";
 import { dinero, fechaCorta } from "@/lib/formato";
 import { ETAPAS, ETIQUETA_MOTIVO, type Contacto, type Etapa, type MotivoPerdida } from "@/lib/tipos";
 import { DialogoPerdido } from "@/componentes/dialogo-perdido";
+import { COLOR_ETAPA } from "@/componentes/etiquetas";
 
 export function Tablero({ contactos, mostrarVendedor }: { contactos: Contacto[]; mostrarVendedor: boolean }) {
   const [items, setItems] = useState(contactos);
@@ -54,14 +55,14 @@ export function Tablero({ contactos, mostrarVendedor }: { contactos: Contacto[];
 
   return (
     <>
-      {error && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      {error && <p className="rounded-md bg-marca/10 p-3 text-sm text-red-400">{error}</p>}
       <DndContext
         sensors={sensores}
         onDragStart={(e: DragStartEvent) => setArrastrando(items.find((x) => x.id === e.active.id) ?? null)}
         onDragEnd={alSoltar}
         onDragCancel={() => setArrastrando(null)}
       >
-        <div className="grid grid-flow-col auto-cols-[minmax(240px,1fr)] gap-3 overflow-x-auto pb-4">
+        <div className="grid grid-flow-col auto-cols-[minmax(210px,1fr)] gap-3 overflow-x-auto pb-4">
           {ETAPAS.map((etapa) => {
             const deEtapa = items.filter((c) => c.etapa === etapa.valor);
             return (
@@ -100,19 +101,23 @@ function Columna({ etapa, titulo, contactos, children }: {
   return (
     <div
       ref={setNodeRef}
-      className={`flex min-h-[60vh] flex-col rounded-lg border p-2 transition-colors ${isOver ? "border-blue-400 bg-blue-50" : "border-slate-200 bg-slate-100/70"}`}
+      className={`flex min-h-[65vh] flex-col overflow-hidden rounded-xl border transition-colors ${isOver ? "border-accion bg-accion/10" : "border-borde bg-panel/60"}`}
     >
-      <div className="mb-2 px-1">
+      <div className={`h-1 ${COLOR_ETAPA[etapa].barra}`} />
+      <div className="px-3 pt-3 pb-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold">{titulo}</h2>
-          <span className="text-xs text-slate-500">{contactos.length}</span>
+          <h2 className="flex items-center gap-2 text-sm font-bold tracking-wide uppercase">
+            <span className={`h-2 w-2 rounded-full ${COLOR_ETAPA[etapa].punto}`} />
+            {titulo}
+          </h2>
+          <span className="rounded-full bg-panel-3 px-2 py-0.5 text-xs font-semibold text-texto-2">{contactos.length}</span>
         </div>
-        <p className="text-xs text-slate-500">
-          {totalUsd > 0 && dinero(totalUsd, "USD")}
-          {enfriados > 0 && <span className="ml-2 font-medium text-red-600">{enfriados} enfriado{enfriados > 1 && "s"}</span>}
+        <p className="mt-1 flex items-center gap-2 text-xs text-apagado">
+          {totalUsd > 0 && <span className="font-medium text-texto-2">{dinero(totalUsd, "USD")}</span>}
+          {enfriados > 0 && <span className="font-semibold text-red-400">🔥 {enfriados} enfriado{enfriados > 1 && "s"}</span>}
         </p>
       </div>
-      <div className="flex flex-col gap-2">{children}</div>
+      <div className="flex flex-col gap-2 px-2 pb-2">{children}</div>
     </div>
   );
 }
@@ -128,16 +133,20 @@ function Tarjeta({ contacto, mostrarVendedor }: { contacto: Contacto; mostrarVen
 
 function ContenidoTarjeta({ contacto: c, mostrarVendedor }: { contacto: Contacto; mostrarVendedor: boolean }) {
   return (
-    <div className={`cursor-grab rounded-md border bg-white p-2.5 text-sm shadow-sm ${c.enfriado ? "border-red-400 bg-red-50" : "border-slate-200"}`}>
+    <div
+      className={`cursor-grab rounded-lg border p-3 text-sm shadow-md shadow-black/30 transition hover:border-borde-fuerte active:cursor-grabbing ${
+        c.enfriado ? "border-marca/70 bg-gradient-to-br from-marca/20 to-panel-2" : "border-borde bg-panel-2"
+      }`}
+    >
       <div className="flex items-start justify-between gap-2">
-        <Link href={`/contactos/${c.id}`} className="font-medium hover:underline" onPointerDown={(e) => e.stopPropagation()}>
+        <Link href={`/contactos/${c.id}`} className="font-semibold text-texto hover:text-accion" onPointerDown={(e) => e.stopPropagation()}>
           {c.nombre}
         </Link>
-        {c.monto != null && <span className="shrink-0 text-xs text-slate-500">{dinero(c.monto, c.moneda)}</span>}
+        {c.monto != null && <span className="shrink-0 text-xs font-medium text-green-300">{dinero(c.monto, c.moneda)}</span>}
       </div>
-      {c.interes && <p className="text-xs text-slate-500">{c.interes}</p>}
+      {c.interes && <p className="text-xs text-apagado">{c.interes}</p>}
       {c.abierto && (
-        <p className={`mt-1 text-xs ${c.enfriado || c.vencido ? "font-medium text-red-700" : "text-slate-600"}`}>
+        <p className={`mt-1 text-xs ${c.enfriado || c.vencido ? "font-medium text-red-400" : "text-texto-2"}`}>
           {c.enfriado
             ? `Enfriado · ${c.dias_sin_actividad} días sin actividad`
             : c.proximo_paso
@@ -146,9 +155,9 @@ function ContenidoTarjeta({ contacto: c, mostrarVendedor }: { contacto: Contacto
         </p>
       )}
       {c.etapa === "perdido" && c.motivo_perdida && (
-        <p className="mt-1 text-xs text-slate-500">Motivo: {ETIQUETA_MOTIVO[c.motivo_perdida]}</p>
+        <p className="mt-1 text-xs text-apagado">Motivo: {ETIQUETA_MOTIVO[c.motivo_perdida]}</p>
       )}
-      {mostrarVendedor && <p className="mt-1 text-xs text-slate-400">{c.vendedor_nombre}</p>}
+      {mostrarVendedor && <p className="mt-2 border-t border-borde pt-1.5 text-[11px] text-apagado">{c.vendedor_nombre}</p>}
     </div>
   );
 }

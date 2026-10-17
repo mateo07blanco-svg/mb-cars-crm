@@ -13,10 +13,10 @@ export function DialogoPerdido({ nombre, onCancelar, onConfirmar }: {
   const falta = !motivo || (motivo === "otro" && !detalle.trim());
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onCancelar}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={onCancelar}>
       <div className="tarjeta w-full max-w-sm p-5" onClick={(e) => e.stopPropagation()}>
         <h2 className="text-lg font-semibold">¿Por qué se perdió?</h2>
-        <p className="mb-4 text-sm text-slate-500">{nombre} queda guardado como perdido con este motivo.</p>
+        <p className="mb-4 text-sm text-apagado">{nombre} queda guardado como perdido con este motivo.</p>
         <div className="space-y-2">
           {MOTIVOS.map((m) => (
             <label key={m.valor} className="flex items-center gap-2 text-sm">
@@ -34,7 +34,7 @@ export function DialogoPerdido({ nombre, onCancelar, onConfirmar }: {
         />
         <div className="mt-4 flex justify-end gap-2">
           <button className="boton-secundario" onClick={onCancelar}>Cancelar</button>
-          <button className="boton bg-red-600 hover:bg-red-700" disabled={falta} onClick={() => motivo && onConfirmar(motivo, detalle)}>
+          <button className="boton-marca" disabled={falta} onClick={() => motivo && onConfirmar(motivo, detalle)}>
             Marcar perdido
           </button>
         </div>

@@ -8,8 +8,8 @@ export default async function Importar() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold">Importar contactos desde CSV</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="titulo-pagina">Importar contactos desde CSV</h1>
+        <p className="text-sm text-apagado">
           Subí el archivo, revisá la vista previa y recién ahí se guarda.
           {usuario.rol === "dueno"
             ? " La columna «vendedor» asigna cada fila (si queda vacía, queda a tu nombre)."

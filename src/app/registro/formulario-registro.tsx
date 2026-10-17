@@ -22,7 +22,7 @@ export function FormularioRegistro() {
 
   if (estado.listo) {
     return (
-      <p className="rounded-md bg-green-50 p-3 text-sm text-green-800">
+      <p className="rounded-md bg-exito/10 p-3 text-sm text-green-400">
         Listo. Revisá tu mail para confirmar la cuenta y avisale al dueño para que te habilite.{" "}
         <Link href="/login" className="underline">Volver al ingreso</Link>
       </p>
@@ -43,8 +43,8 @@ export function FormularioRegistro() {
         <label className="etiqueta" htmlFor="password">Contraseña (mínimo 8 caracteres)</label>
         <input className="campo" id="password" name="password" type="password" minLength={8} required />
       </div>
-      {estado.error && <p className="text-sm text-red-600">{estado.error}</p>}
-      <button className="boton w-full" disabled={enviando}>{enviando ? "Creando…" : "Crear cuenta"}</button>
+      {estado.error && <p className="text-sm text-red-400">{estado.error}</p>}
+      <button className="boton-marca w-full py-2.5" disabled={enviando}>{enviando ? "Creando…" : "Crear cuenta"}</button>
     </form>
   );
 }

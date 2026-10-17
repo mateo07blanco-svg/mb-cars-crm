@@ -23,13 +23,13 @@ export function FilaUsuario({ usuario: u, esYo }: { usuario: Perfil; esYo: boole
       <div className="min-w-48 flex-1">
         <p className="font-medium">
           {u.nombre}
-          {!u.activo && <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800">Pendiente / pausado</span>}
+          {!u.activo && <span className="ml-2 rounded bg-aviso/10 px-1.5 py-0.5 text-xs text-amber-400">Pendiente / pausado</span>}
         </p>
-        <p className="text-xs text-slate-500">{u.email}</p>
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        <p className="text-xs text-apagado">{u.email}</p>
+        {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
       {esYo ? (
-        <span className="text-sm text-slate-500">Dueño (vos)</span>
+        <span className="text-sm text-apagado">Dueño (vos)</span>
       ) : (
         <>
           <select className="campo w-auto" value={u.rol} disabled={pendiente} onChange={(e) => cambiar({ rol: e.target.value as Rol })}>

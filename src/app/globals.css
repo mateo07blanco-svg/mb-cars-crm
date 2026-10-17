@@ -1,27 +1,65 @@
 @import "tailwindcss";
 
+/* Paleta MB Cars: base oscura, rojo de marca, azul para acciones, verde para lo ganado. */
 @theme inline {
   --font-sans: var(--font-geist-sans);
+
+  --color-fondo: #0a0d13;
+  --color-panel: #121823;
+  --color-panel-2: #18202d;
+  --color-panel-3: #212b3a;
+  --color-borde: #263142;
+  --color-borde-fuerte: #34425a;
+  --color-texto: #e8ecf2;
+  --color-texto-2: #b4bdcc;
+  --color-apagado: #7b879b;
+
+  --color-marca: #e11d2e;
+  --color-marca-oscuro: #b5121f;
+  --color-accion: #2f7bf5;
+  --color-accion-oscuro: #1f63d6;
+  --color-exito: #22c55e;
+  --color-aviso: #f59e0b;
+}
+
+:root {
+  color-scheme: dark;
 }
 
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+/* Calendario del input de fecha legible sobre fondo oscuro. */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+}
+
 @layer components {
   .campo {
-    @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100;
+    @apply w-full rounded-lg border border-borde bg-fondo px-3 py-2 text-sm text-texto shadow-inner outline-none placeholder:text-apagado focus:border-accion focus:ring-2 focus:ring-accion/25;
   }
   .etiqueta {
-    @apply mb-1 block text-xs font-medium text-slate-600;
+    @apply mb-1 block text-xs font-medium tracking-wide text-apagado uppercase;
   }
   .boton {
-    @apply inline-flex items-center justify-center gap-1 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg bg-accion px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-accion/20 transition hover:bg-accion-oscuro disabled:opacity-50;
+  }
+  .boton-marca {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg bg-marca px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-marca/20 transition hover:bg-marca-oscuro disabled:opacity-50;
   }
   .boton-secundario {
-    @apply inline-flex items-center justify-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-borde bg-panel-2 px-3 py-2 text-sm font-medium text-texto-2 transition hover:border-borde-fuerte hover:bg-panel-3 hover:text-texto disabled:opacity-50;
   }
   .tarjeta {
-    @apply rounded-lg border border-slate-200 bg-white shadow-sm;
+    @apply rounded-xl border border-borde bg-panel shadow-lg shadow-black/20;
   }
+  .titulo-pagina {
+    @apply text-2xl font-bold tracking-tight text-texto;
+  }
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: var(--color-marca);
 }
