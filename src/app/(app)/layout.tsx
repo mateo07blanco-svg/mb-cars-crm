@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { usuarioActual } from "@/lib/auth";
 import { crearClienteServidor } from "@/lib/supabase/server";
@@ -38,10 +39,10 @@ async function Encabezado() {
     <>
       <Navegacion esDueno={usuario.rol === "dueno"} alertas={count ?? 0} />
       <div className="ml-auto flex items-center gap-3 text-sm">
-        <span className="text-slate-600">
+        <Link href="/cuenta" className="text-slate-600 hover:text-slate-900" title="Mi cuenta">
           {usuario.nombre}
           {usuario.rol === "dueno" && <span className="ml-1 rounded bg-slate-100 px-1.5 py-0.5 text-xs">Dueño</span>}
-        </span>
+        </Link>
         <form action={cerrarSesion}>
           <button className="text-slate-500 hover:text-slate-900">Salir</button>
         </form>
