@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CRM MB Cars
 
-## Getting Started
+CRM liviano para MB Cars: contactos, etapas, próximo paso, historial y panel del dueño.
+Hecho con Next.js 16 y Supabase.
 
-First, run the development server:
+## Pantallas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+| Ruta | Para qué |
+| --- | --- |
+| `/hoy` | Lista del día de cada vendedor: vencidos, para hoy, enfriados y sin próximo paso. |
+| `/tablero` | Tablero por etapas con arrastrar y soltar. Al soltar en «Perdido» pide el motivo. |
+| `/contactos` | Buscador de todos los contactos. |
+| `/contactos/[id]` | Ficha: datos, etapa, próximo paso e historial. |
+| `/contactos/nuevo` | Carga manual. |
+| `/importar` | Importación CSV con vista previa, errores y duplicados antes de guardar. |
+| `/panel` | Solo dueño: entraron, ganados, motivos de pérdida, origen y resumen por vendedor. |
+| `/equipo` | Solo dueño: habilitar o pausar usuarios. |
+| `/formulario` | Formulario público de consultas. |
+| `/api/formulario` | Lo mismo, para conectar el formulario del sitio web (POST, ver abajo). |
+
+## Reglas (viven en la base de datos)
+
+- Cada vendedor ve y edita solo lo suyo; el dueño ve todo y puede reasignar.
+- Nada se borra: no hay permiso de borrado y un disparador lo bloquea igual. El historial no se edita.
+- «Perdido» exige motivo (y detalle si es «Otro»).
+- Enfriamiento: un contacto en «Contactado» o «Propuesta» sin próximo paso vigente y con más de
+  7 días sin actividad aparece en rojo en Hoy, en el tablero, en la ficha y con un contador en el menú.
+  El número se cambia en la función `dias_enfriamiento()`.
+- Cada interacción, alta, cambio de etapa y reasignación queda en el historial.
+- El formulario web reparte en ronda entre los vendedores activos y, si la persona ya existía,
+  suma la consulta a su ficha en vez de duplicarla.
+- Una cuenta nueva queda pausada hasta que el dueño la habilita en «Equipo».
+
+## Base de datos
+
+Las migraciones están en `supabase/migrations/` y los datos de prueba en `supabase/seed.sql`
+(60 contactos de autos repartidos entre 3 vendedores; requiere que los usuarios existan).
+
+## Conectar el formulario del sitio web
+
+Opción simple: linkear o embeber la página `/formulario`.
+
+Opción formulario propio: hacer un POST a `/api/formulario` con los campos
+`nombre`, `telefono`, `email`, `interes`, `mensaje` (y opcionalmente `volver` con la URL
+de la página de gracias):
+
+```html
+<form action="https://TU-APP.vercel.app/api/formulario" method="post">
+  <input name="nombre" required>
+  <input name="telefono">
+  <input name="email" type="email">
+  <input name="interes">
+  <textarea name="mensaje"></textarea>
+  <input type="hidden" name="volver" value="https://mbcars.com.ar/gracias">
+  <button>Enviar</button>
+</form>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Desarrollo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+La URL y la clave publicable del proyecto de Supabase están en `src/lib/supabase/config.ts`
+(no son secretas). Para usar otro proyecto, definí `NEXT_PUBLIC_SUPABASE_URL` y
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
